@@ -1,0 +1,1379 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+
+
+ 
+
+<title>입찰공고 상세</title>
+
+
+
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/body.css" />
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/width.css" />
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie.css" />
+<![endif]-->
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie8.css" />
+<![endif]-->
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie7.css" />
+<![endif]-->
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie6.css" />
+<script src="/gov/koneps/co/js/png_ie6.js" type="text/livescript"></script>
+<script language="javascript" type="text/javascript">
+//<![CDATA[
+DD_belatedPNG.fix('.png, .win, .btn_mdl, .btn_view, span, strong, img, li');  // png 이미지 적용
+//]]>
+</script>
+<![endif]-->
+
+
+
+
+
+
+ 
+
+ 
+<script type="text/javascript" src="/gov/koneps/co/js/crossDomain.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/popup.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/commonPopup.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/wz_tooltip.js"></script>
+<script type="text/javascript" src="/gov/koneps/ep/co/js/bidLink.js?1610765028498"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/util.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/jquery/js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="/gov/koneps/ep/co/js/epPopup.js"></script>
+<script type="text/javascript" src="/gov/koneps/ep/co/js/epDialog.js?1610765028498"></script>
+<script type="text/javascript" src="/gov/koneps/ep/helpmsg/invitation/publish/facilBidInfoDtl.js?1610765028498"></script>
+<script type="text/javascript" src="/gov/koneps/ep/js/invitation/publish/facilBidInfoDtl.js?1610765028498"></script>
+<script type="text/javascript" src="/gov/koneps/ep/js/preparation/orderplan/orderplanCommon.js?1610765028498"></script>
+<script type="text/javascript"> 
+//<![CDATA[
+
+           
+	// PQ 및 적격성심사결과 조회
+	function pqResult(eligbltJdgmnBidYn) {
+		var f		= document.frmDtl;
+		var bidno	= f.bidno.value;
+		var bidseq	= f.bidseq.value;
+		var url 	= "http://www.g2b.go.kr:8084/ep/eval/pfacil/openBidFacilPqResult.do?bidno="+bidno+"&bidseq="+bidseq; //공사 PQ심사 리스트 -> 현재는 목록 차후 상세화면이 나오면 링크변경해야됨
+		
+		if(eligbltJdgmnBidYn == "Y") {
+			url += "&evalClCd=E";
+		} else {
+			url += "&evalClCd=P";
+		}
+		
+		popup_openWindowScroll(url, "840", "550", "");
+	}
+	
+	
+	function checkIsOpenPage(){
+		if('' == 'Y'){
+			alert('현재 화면에서 투찰할 수 없습니다.\r\n[입찰정보]-[각업무]-[공고현황]에서 해당 공고 검색 후 투찰하십시오.');
+			return true;
+		}
+		return false;
+	}	
+
+	
+	//PQ심사신청서
+	function pqReqDoc(eligbltJdgmnBidYn){
+		var f = document.frmDtl;
+		var bidno = f.bidno.value;
+		var bidseq = f.bidseq.value;
+		
+		if(isLogin() == false){
+			return;
+		}
+		var url = "http://www.g2b.go.kr:8084/ep/eval/pfacil/pqReqdocList.do?searchCondition=S&bidno="+bidno+"&bidseq="+bidseq;
+		
+		if(eligbltJdgmnBidYn == "Y") {
+			url += "&evalClCd=E";
+		} else {
+			url += "&evalClCd=P";
+		}
+		
+		location.href = url;		
+	}
+	
+	
+	//적격심사 신청서
+	function facilQevalReqDoc(){
+		var f = document.frmDtl;
+		var bidno = f.bidno.value;
+		var bidseq = f.bidseq.value;
+		var fromOpenbidYmd 	= f.openBidDt.value;
+		var toOpenbidYmd	= f.openBidDt.value;
+		var taskClCd = f.taskClCd.value;
+		
+		if(isLogin() == false){
+			return;
+		}
+		
+		var url = "http://www.g2b.go.kr:8084/ep/eval/general/qevalTgNtcdocRcvList.do?bidno="+bidno+
+				"&qevalClCd=2&fromOpenbidYmd="+fromOpenbidYmd+
+				"&toOpenbidYmd="+toOpenbidYmd;
+		location.href=url;
+	}
+	
+	function toList(){
+		var f = document.frmDtl;
+		var url = "javascript:history.go(-1)";
+		if(url.indexOf('/ep/tbid/tbidList.do') < 0){
+			url = '/ep/tbid/tbidFwd.do?bidSearchType=1';
+		}
+  		location.href = url;
+  	}
+	
+	
+	//설계서 다운로드 버튼 제어
+	function downloadAgrChk(){
+		if($("#downloadAgrChkY").is(":checked")) {
+			
+			$("#dsgnDownload").attr("href", "javascript:toDsgnDocDownload('','20150123585','00','0','0');");
+			
+			
+			$("#dsgnDownload").removeClass("btn_mdld");
+			$("#dsgnDownload").addClass("btn_mdl");
+		} else {
+			$("#dsgnDownload").removeClass("btn_mdl");
+			$("#dsgnDownload").addClass("btn_mdld");		
+			$("#dsgnDownload").removeAttr("href");		
+		}
+	}
+
+//]]>
+</script>
+
+
+
+
+</head>
+<body onload="javascript:facilBidInfoDtlInit();">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="content_wrap">
+
+    <div id="content_header"><h2>시설 입찰공고 상세</h2>    
+    	<div id='help'><button type='button' id='btn_help' title='새창열림' onclick="javascript:util_viewOnlineManual('/WEB-INF/jsp/ep/invitation/publish/facilBidInfoDtl.jsp','RUKE_facilBidDtl','/WEB-INF/jsp/ep/invitation/publish/facilBidInfoDtl.jsp','/ep/invitation/publish/bidInfoDtl.do','#facilBidDtl');"><span>온라인매뉴얼</span></button></div>
+    </div>
+
+
+
+ 
+ 
+    <div id="container">
+		<form id="frmDtl" name="frmDtl" action="">
+			<input type="hidden" id="taskClCd" name="taskClCd" value="3" title="업무구분코드" />
+			<input type="hidden" id="bidno" name="bidno" value="20150123585" title="공고입찰번호"/>
+			<input type="hidden" id="bidseq" name="bidseq" value="00" title="공고입찰차수"/>
+			<input type="hidden" id="rebidno" name="rebidno" value="0" title="재공고번호" />
+			<input type="hidden" id="bidContractMethodCd" name="bidContractMethodCd" value="40040" title="입찰계약방식" />
+			<input type="hidden" id="bidMethodCd" name="bidMethodCd" value="01" title="입찰방법코드"/>
+			<input type="hidden" id="openBidDt" name="openBidDt" value="2015/02/04" title="개찰일자"/>
+			<input type="hidden" id="popUpYn" name="popUpYn" value="" title="팝업여부"/>
+			<input type="hidden" id="loginId" name="loginId" value="" title="로그인Id"/>
+			 
+            <input type="hidden" id="buildJobRelmAdvncPosblDtOverYn" name="buildJobRelmAdvncPosblDtOverYn" value="N" title="건설업역상호진출여부선택가능여부" />
+            <input type="hidden" id="buildJobRelmAdvncPosblInfoViewYn" name="buildJobRelmAdvncPosblInfoViewYn" value="N" title="건설업역상호진출공고안내표기여부" />
+            <input type="hidden" id="jointSppAgtRcvYn" name="jointSppAgtRcvYn" value="N" title="공동수급접수방식" />
+            <input type="hidden" id="jointsppComptWayCd" name="jointsppComptWayCd" value="4" title="공동수급구성방식" />
+		</form>
+		<p class="btn_description dx"><a href="javascript:void(0);" class="desc_open"><span class="hide">설명글 열기/닫기</span></a></p>
+		<div class="description mdx2" style="padding-top:5px;">	
+			<ol>
+				<li>본 시설공사 입찰에 참여하고자 하는 분들은 시행령 등의 입찰에 관련된 법령 및 아래의 입찰관련서류를 입찰전에 완전히 숙지하신 후<br/> 
+					입찰에 참가하시기 바랍니다.</li>
+				<li>입찰에 관한 서류: 입찰공고문, 설계서(설계도면, 공사시방서 및 현장설명서), 물량내역서,<br/>
+            		낙찰자 결정관련 심사기준, 공사입찰유의서, 공사계약일반조건, 공사계약특수조건,<br/>
+ 					전자입찰특별유의서(전자입찰 건에 한함), 기타 참고사항을 기재한 서류 등</li>
+			
+				<li>
+					<span class='blue'>
+					조달청에서는 타 공공기관에서 직접 집행하는 입찰건의 세부내용은 잘 알 수 없으므로 입찰참가자격, 적격심사기준 등 
+					세부내용에 관한 사항은 해당 발주기관에 직접 문의하시면 정확한 답변을 받으실 수 있습니다.</span>
+				</li>
+				
+				
+			</ol>
+		</div>
+		
+						
+
+		<div class="infoleft"><h3>[나의공고 관리]</h3> &nbsp;<a class="btn_mdl" href="javascript:toDibsBid();" title="공고 찜하기"><span>공고 찜하기</span></a></div>
+        <div class="section">
+        	<p class="hide">나의 공고 관리를 입찰집행 부가정보 내용과 신청서/입찰서 제출의 항목으로 정리해 놓은 표입니다.</p>
+		    <table class="table_info">
+	    	    <caption><span>나의공고 관리 </span></caption>
+	      	  	<colgroup>
+		       	 	<col class="w18p" />
+		       	 	<col class="w82p" />
+	       	 	</colgroup>
+	       	 	<tr>
+	       		 <th scope="row"><p>입찰집행 부가정보</p></th>
+	       			<td><div class="tb_inner">
+	       				
+	       				
+	            			            			
+	            			<span class="btn_mdld"><button type="button" disabled="disabled" title="PQ심사결과조회">PQ심사결과조회</button></span>
+	            		
+	            		
+	       				
+	       				
+	            		
+	            			<span class='btn_mdld'><button type="button" disabled="disabled" title="지명경쟁자료조회">지명경쟁자료조회</button></span>
+	            		
+	            		
+
+						
+	       				
+	            		
+	            			<span class='btn_mdld'><button type="button" disabled="disabled" title="실적경쟁자료조회">실적경쟁자료조회</button></span>
+	            		
+	            		
+	            		
+	       				
+		       				
+						
+							<span class='btn_mdld'><button type="button" disabled="disabled" title="현장설명참가조회">현장설명참가조회</button></span>
+						
+						
+						</div>
+	       			</td>
+				</tr>
+				<tr>
+	       			<th scope="row"><p>신청서/입찰서 제출</p></th>
+	       			<td><div class="tb_inner">
+	       				
+		       				
+		            		
+		            			<span class="btn_mdld"><button type="button" disabled="disabled" title="PQ심사신청">PQ심사신청</button></span>
+		            		
+	            		
+	            		<!-- 조건제어 필요, 실적신청서접수일시는 제외하였슴 -->
+	            		
+            			
+            			
+            				<span class='btn_mdld'><button type="button" disabled="disabled" title="실적심사신청">실적심사신청</button></span>            				
+            			
+	            			            		
+	            		
+						<!-- 조건제어 필요   -->
+						
+						
+						
+							<span class='btn_mdld'><button type="button" disabled="disabled" title="적격심사신청">적격심사신청</button></span>
+						
+						
+						
+						
+		       				
+						
+							<span class='btn_mdld'><button type="button" disabled="disabled" title="현장설명참가신청">현장설명참가신청</button></span>
+						
+						
+						
+						<!-- 협정 일반 -->
+						
+	       				
+		            	
+		            		<span class='btn_mdld'><button type="button" disabled="disabled" title="공동수급협정서관리">공동수급협정서관리</button></span>
+		            	
+		            	
+		            	
+		            	<!-- 투찰 일반 -->
+		            	
+							
+							
+							
+								
+								
+									<a class="btn_mdl" href="javascript:fgprtBidding();" title="지문투찰"><span>지문투찰</span></a>
+								
+								
+								
+							
+							
+						
+						<!--BidCenter용 책갈피--><a name="bidRelLink"></a></div>
+	       			</td>
+				</tr>
+			</table>
+		</div>
+			       			
+		
+		<div class="infoleft"><h3>[공고일반 ]</h3></div>
+        <div class="section">
+        	<p class="hide">공고일반을 공고종류,게시일시,입찰공고번호,참조번호,공고명 등의 항목으로 정리해 놓은 표입니다.</p>
+		    <table class="table_info">
+	    	    <caption><span>공고일반 정보</span></caption>
+	      	  	<colgroup>
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+	       	 	</colgroup>
+	        	<tr>
+	            	<th scope="row"><p>공고종류</p></th>
+	            	<td><div class="tb_inner">실공고</div></td>
+	            	<th scope="row"><p>게시일시</p></th>
+	            	<td><div class="tb_inner">2015/01/31 10:48</div></td>
+	       		</tr>
+	        	<tr>
+	            	<th scope="row"><p>입찰공고번호</p></th>
+	            	<td><div class="tb_inner">20150123585 - 00</div></td>
+	            	<th scope="row"><p>참조번호</p></th>
+	            	<td><div class="tb_inner">경상대학교 공고 제2015-25호</div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>공고명</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+	            		경상대학교 도서관 2층 열람실 북서쪽 화장실 보수공사 
+	            		
+	            		
+	            			<strong class='red'>(긴급공고)</strong>
+	            		
+	            		
+	            		
+	            		
+	            		
+	            		
+	            			
+	            						
+							
+						
+								
+	            		
+	            			<br />본 공고는 지문인식 전자입찰제도가 적용되오니 미리 지문보안토큰에 지문정보를 등록하여야 합니다.
+	            		
+	            			</div>
+	            	</td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>공고기관</p></th>
+	            	<td><div class="tb_inner"><span class="darkblue">경상대학교</span></div></td>
+	            	<th scope="row"><p>수요기관</p></th>
+	            	<td><div class="tb_inner"><span class="darkblue">경상대학교</span></div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>입찰방식</p></th>
+	            	<td><div class="tb_inner">전자입찰</div></td>
+	            	<th scope="row"><p>낙찰방법</p></th>
+	            	<td><div class="tb_inner">공고서 참조</div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>계약방법</p></th>
+	            	<td><div class="tb_inner">수의(소액)</div></td>
+	            	<th scope="row"><p>국제입찰구분</p></th>
+	            	<td><div class="tb_inner">국내입찰</div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>재입찰</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+	            		재입찰 허용
+	            		
+	            		
+	            			
+	            				
+	            				
+	            					<br/>(재입찰시 기존 예비가격을 사용하여 예정가격이 산정됩니다.)
+	            				
+	            			
+	            		</div>
+					</td>
+	       		</tr>
+	       		<tr>
+	       			<th scope="row"><p>발주계획번호</p></th>
+	            	<td>
+	            		<div class="tb_inner">	            		
+							
+							
+								<a href="javascript:toOrderPlanPubDtlPopup('3', '1', '2015', '7000215', '5');">3-1-2015-7000215-000005</a>										
+							
+	            		</div>
+	            	</td>
+	            	<th scope="row"><p>공사현장</p></th>
+        			<td><div class="tb_inner">
+        				경상남도 진주시</div>
+        			</td>
+	       		</tr>
+	       		<tr>
+					<th scope="row"><p>국내/국제 입찰사유</p></th>
+					<td colspan="3"><div class="tb_inner">
+						
+							국제입찰 비대상(고시금액 이하 또는 대상기관아님)
+						
+						</div>
+					</td>
+    			</tr>
+    			<tr>
+					<th scope="row"><p>WTO품목번호</p></th>
+					<td colspan="3"><div class="tb_inner">
+						건설공사</div>
+					</td>
+    			</tr>
+    			
+    			<tr>
+					<th scope="row"><p>WTO수의계약사유</p></th>
+					<td colspan="3"><div class="tb_inner">
+						<textarea rows="3" cols="90" readonly="readonly" class="bg w98p" title="WTO수의계약사유" >
+							
+						</textarea></div>
+					</td>
+    			</tr>
+    			
+    			
+				<tr>
+	            	<th scope="row"><p>입찰자격</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+	            		공고서 참조</div>
+	            	</td>
+	            </tr>
+	            <tr>
+	            	<th scope="row"><p>관련공고</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+						
+						
+							
+						
+						</div>
+	            	</td>
+	       		</tr>
+    		</table>
+		</div>
+		
+		<div class="infoleft"><h3>[입찰집행 및 진행 정보]</h3></div>
+        <div class="section">
+        	<p class="hide">입찰집행 및 진행 정보를 검사,검수,집행관, 공고담당자등의 항목으로 정리해 놓은 표입니다.</p>
+		    <table class="table_info">
+	    	    <caption><span>입찰집행 및 진행 정보</span></caption>
+	      	  	<colgroup>
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+	       	 	</colgroup>       		
+	        	<tr>
+	            	<th><p>공고담당자</p></th>
+	            	<td>
+	            		<div class="tb_inner">
+	            			<a href="javascript:epPopup_staffInfo('20150123585', '00');" title="공고담당자정보 조회"><span class="darkblue u_line">서유미</span></a>
+                            
+                                
+                                
+                                    (055-772-0395)
+                                
+                            
+	            		</div>
+	            	 </td>
+	            	<th><p>집행관</p></th>
+	            	<td>
+	            		<div class="tb_inner">
+	            			<a href="javascript:epPopup_executorInfo('20150123585', '00');" title="집행관정보 조회"><span class="darkblue u_line">서유미</span></a>
+	            		</div>
+	            	</td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>입찰개시일시</p></th>
+	            	<td><div class="tb_inner">2015/02/02 09:00:00</div></td>
+	            	<th scope="row"><p>입찰마감일시</p></th>
+	            	<td><div class="tb_inner">2015/02/04 10:00:00</div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>개찰(입찰)일시</p></th>
+	            	<td><div class="tb_inner">
+	            		2015/02/04 11:00:00
+	            		</div>
+	            	</td>
+	            	<th scope="row"><p>개찰장소</p></th>
+	            	<td><div class="tb_inner">국가종합전자조달시스템(나라장터)</div></td>
+	       		</tr>
+	       		
+	       		
+	       		<tr>
+	            	<th scope="row"><p>입찰참가자격등록<br />마감일시</p></th>
+	            	<td colspan="3">
+	            		<div class="tb_inner">
+	            			2015/02/03 18:00:00<br/>
+		            		
+			            		
+			            			<span class='darkblue'>조달청 입찰참가등록 가능시간은 평일 09:00~18:00 이며, 토요일, 일요일 및 공휴일은 업무처리가 불가합니다.</span><br/>
+			            		
+			            		
+		            		
+	            			<span class='red'>본 입찰에 참여하는 업체는 입찰참가자격등록마감일시까지 나라장터에 경쟁입찰참가자격등록(특히 물품, 업종 등 자격제한 사항 필히 확인)을 해야 합니다.</span>
+	            		</div>
+	            	</td>
+	       		</tr>
+	       		
+	       		
+	       		<tr>
+	            	<th scope="row"><p>보증서접수마감일시</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+	            		
+							<br/>
+						
+						<span class="blue">보증서 접수마감일시를 입력하지 않은 경우에는, 입찰서 접수마감일 전일 18시까지 제출이 가능합니다.<br/>
+										   (단, 입찰보증금지급각서로 대체하는 경우 보증금이 면제됩니다.)</span>		</div>				
+					</td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>공동수급협정서<br />접수여부</p></th>
+	            	<td><div class="tb_inner">
+		            	
+	                    
+	                    
+		            		<!-- 없음 -->  
+		            		
+		            		
+		            		방식: 공고서참조
+		            		<br/>           		
+		            		
+			            		
+		            		
+		            			
+		            		
+		            		
+		            	
+		            	
+	            		</div>
+	            	</td>
+	            	<th scope="row"><p>공동수급협정서<br />마감일시</p></th>
+	            	<td><div class="tb_inner">
+	            		
+	            		
+	            			마감: 공고서 참조
+	            		
+	            		 
+	            		</div>
+	            	</td>
+	       		</tr>
+	       		
+	       		<tr>
+	            	<th scope="row"><p>PQ심사신청서</p></th>
+	            	<td><div class="tb_inner">방식: 없음</div></td>
+	            	<th scope="row"><p>PQ심사신청서<br />신청기한</p></th>
+	            	<td><div class="tb_inner"> </div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>실적심사신청서</p></th>
+	            	<td><div class="tb_inner">
+	            		<!--없음-->
+	            		방식: 없음
+	            		
+	            		
+	            		</div>
+	            	</td>
+	            	<th scope="row"><p>실적심사신청서<br />신청기한</p></th>
+	            	<td><div class="tb_inner"> </div></td>
+	       		</tr>
+	       		
+	       		
+	       		<tr>
+	            	<th scope="row"><p>현장설명장소</p></th>
+	            	<td><div class="tb_inner"></div></td>
+	            	<th scope="row"><p>현장설명일시</p></th>
+	            	<td><div class="tb_inner"> </div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>현장설명서</p></th>
+	            	<td><div class="tb_inner">
+	            		
+						
+							
+							
+							
+							
+														
+							
+							
+							
+							
+						
+							
+							
+							
+							
+														
+							
+							
+							
+							
+						
+							
+							
+							
+							
+														
+							
+							
+							
+							
+						
+
+						</div>
+	            	</td>
+	            	<th scope="row"><p>입찰내역작성프로그램</p></th>
+	            	<td>
+	            		<div class="tb_inner">
+		            		<!-- 
+		            			조달청(기관코드가 123으로 시작)이고,
+		            			공내역서(파일구분이 4이고 upper(substr(공고규격화일,-3))='BID')가 존재하면
+		            			내역입찰 작성프로그램 다운로드 가능		            			
+		            		 -->
+		            		 
+		            		
+		            		
+		            		
+		            		
+	            		</div>
+	            	</td>
+	            </tr>
+	            
+	            <tr>
+	            	<th scope="row"><p><span id="dtstnmId">물량내역서</span> 
+	            	<!--  <button type="button" id="dtstnmHelpId" class="btn_help" title="도움말" onclick="javascript:tooltipHelpMsg('물량내역서')"></button> --></p>
+	            	</th>
+	            	<td><div class="tb_inner">
+            			
+							
+												
+						
+						
+	            		
+	            			
+	            				<!-- 물량내역서를 공내역서로 변경 -->
+	            				<script type="text/javascript" language="javascript"> 
+	            					document.getElementById('dtstnmId').innerHTML = '공내역서';
+	            					//document.getElementById('dtstnmHelpId').style.display="none";
+	            				</script>
+	            			
+	            		
+	            		</div>
+	            	</td>
+	            	<th scope="row"><p>세부심사요령</p></th>
+	            	<td><div class="tb_inner">
+	            		
+						
+							
+						
+							
+						
+							
+						
+						</div>
+	            	</td>
+       			</tr>
+       			
+	       			
+		       		
+		       			
+		       		
+	       		
+	       	    <tr>
+                   <th scope="row"><p>채권자명</p></th>
+                   <td colspan="3"><div class="tb_inner">
+                       경상대학교 사무국장</div>
+                   </td>
+                </tr>   
+    		</table>
+		</div>
+		
+		
+		
+	
+		
+		
+			<div class="infoleft"><h3>[입찰참가수수료 및 입찰보증금 납부정보]</h3></div>
+	        <div class="section">
+	        	<p class="hide">입찰참가수수료 및 입찰보증금 납부정보를 입찰참가수수료 납부, 입찰보증금납부, 채권자명 항목으로 정리해 놓은 표입니다.</p>
+			    <table class="table_info">
+		    	    <caption><span>입찰참가수수료 및 입찰보증금 납부정보</span></caption>
+		      	  	<colgroup>
+			       	 	<col class="w18p" />
+			       	 	<col class="w32p" />
+			       	 	<col class="w18p" />
+			       	 	<col class="w32p" />
+		       	 	</colgroup>
+		        	<tr>
+		            	<th scope="row"><p>입찰참가수수료 납부</p></th>
+		            	<td><div class="tb_inner">
+							<!--  -->
+							
+							
+							
+							방식: 공고서참조
+	
+							
+								
+			            	
+			            	</div>
+						</td>
+		            	<th scope="row"><p>입찰참가수수료금액</p></th>
+		            	<td><div class="tb_inner">원</div></td>
+		       		</tr>
+		        	<tr>
+		            	<th scope="row"><p>입찰보증금납부</p></th>
+		            	<td colspan="3"><div class="tb_inner">
+		            		 
+	 						
+		            		</div>
+		            	</td>
+		            </tr>
+	    		</table>
+			</div>
+		
+		
+		<div class="infoleft"><h3>[예정가격 결정 및 입찰금액 정보]</h3></div>
+        <div class="detail">
+        	<p class="hide">예정가격 결정 및 입찰금액정보를 예가방법, 추첨번호공개여부, 추정금액, 추정가격 항목으로 정리해 놓은 표입니다.</p>
+		    <table class="table_info">
+	    	    <caption><span>예정가격 결정 및 입찰금액 정보</span></caption>
+	      	  	<colgroup>
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+	       	 	</colgroup>
+	        	<tr>
+	            	<th scope="row"><p>예가방법</p></th>
+	            	<td><div class="tb_inner">
+	            		
+	            		
+	            		복수예가 : 4 (추첨예가) / 15 (총예가)</div>
+	            	</td>
+	            	<th scope="row"><p>추첨번호공개여부</p></th>
+	            	<td><div class="tb_inner">
+	            		
+	            		비공개</div>
+	            	</td>
+	       		</tr>
+	        	<tr>
+	            	<th scope="row"><p>추정금액</p></th>
+	            	<td><div class="tb_inner">￦23,417,000원</div></td>
+	            	<th scope="row"><p>추정가격</p></th>
+	            	<td><div class="tb_inner">￦21,288,182원</div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>관급금액(관급자설치관급자재금액)</p></th>
+	            	<td><div class="tb_inner">￦0원</div></td>
+	            	<th scope="row"><p>관급금액(도급자설치관급자재금액)</p></th>
+	            	<td><div class="tb_inner">￦0원</div></td>
+	       		</tr>	       		
+    		</table>
+		</div>
+	
+		<div class="infoleft"><h3>[투찰제한 - 일반 ]</h3></div>
+        <div class="section">
+        	<p class="hide">투찰제한 - 일반을 지역제한, 참가가능지역, 지사투찰허용여부, 업종제한, 업종사항제한, 내역입찰여부, 현장설명 제한여부등의 항목으로 정리해 놓은 표입니다.</p>
+		    <table class="table_info">
+	    	    <caption><span>투찰제한 - 일반</span></caption>
+	      	  	<colgroup>
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+	       	 	</colgroup>
+	       	 	
+	       	 	
+	       		
+	       	 	<tr>
+	       			<th scope="row"><p>지역제한</p></th>
+            		<td colspan="3"><div class="tb_inner">투찰제한</div></td>
+            	</tr>
+	       		
+	       		
+	       	 	
+	       	 	<tr>
+	            	<th scope="row"><p>참가가능지역</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+						
+						
+							[경상남도 진주시] &nbsp;
+						
+						</div>
+					</td>
+	       		</tr>
+	        	<tr>
+	            	<th scope="row"><p>지사투찰허용여부</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+						지사투찰불허
+	            		</div>
+					</td>
+	       		</tr>
+	       		
+	       		
+	       		
+	       		
+				<tr>
+	       			<th scope="row"><p>업종제한</p></th>
+            		<td colspan="3"><div class="tb_inner">투찰제한</div></td>
+            	</tr>
+	       		
+	       		
+	       		 <!-- 시공능력공시액 표시여부 -->
+	       		
+	       		<tr>
+				<th scope="row"><p>업종사항제한</p></th>
+            	<td colspan="3"><div class="tb_inner">
+						
+											
+
+								
+								
+								<strong>[</strong>
+								
+								
+									
+										
+										
+											
+											
+												<a href="javascript:lawSrch('1808','000900','');">시설물유지관리업(0035)</a>
+											
+										
+										
+									
+								
+								
+								
+								
+								<strong>]</strong>
+								업종을 등록한 업체 <br/>							
+								
+       							<br/><span class='darkblue'>※업종명을 클릭시 관련 근거법령을 조회하실수 있습니다.</span>
+       							<br/><span class='darkblue'>※<b>[]</b>안의 업종제한은 시스템상에 입력된 제한사항으로 공고서와 상이할 수도 있습니다. <br/> 
+       							&nbsp;&nbsp;&nbsp;입찰에 참여하시기 전에 <strong>반드시 공고서를 숙지</strong>하여 정확한 제한 업종을 확인하시기 바랍니다.</span>
+						
+
+					<br />
+					<br />
+					<span class='darkblue'>※아래는 제한된 업종에 대해 투찰가능한 허용업종 상황을 보여줍니다. 확인하시기 바랍니다.</span>
+					<p class="hide">투찰제한 정보의 No, 투찰가능한업종, 허용업종 항목으로 정리해 놓은 표입니다.</p>						
+					<table class="table_list_licenseAllowTbl table_list">
+					<caption><span>투찰제한 정보</span></caption>
+					<colgroup>
+						<col class="w10p" />
+			       	 	<col class="w30p" />
+			       	 	<col class=" " />
+					</colgroup>
+					<thead>
+						<tr>
+			            	<th scope="col" class="tc">No.</th>
+			            	<th scope="col" class="tc">투찰가능한업종</th>
+			             	<th scope="col" class="tc">허용업종</th>
+						</tr>
+					</thead>
+						
+						<tbody class="tb_data_none">
+							<tr>
+								<td class="tc" colspan="3">공고서에 의함</td>
+							</tr>
+						</tbody>
+						
+						
+					</table>
+					
+					</div>
+				</td>
+				</tr>
+				
+	       		
+	       		<tr>
+	       			<th scope="row"><p>내역입찰여부</p></th>
+	            	<td><div class="tb_inner">
+	            		내역서 첨부안함
+ 						</div>
+					</td>
+	       			<th scope="row"><p>현장설명 제한여부</p></th>
+	            	<td><div class="tb_inner">
+	            		참가제한안함
+	            		</div>
+	            	</td>
+	            </tr>
+	        	<tr>
+	            	<th scope="row"><p>지역의무공동도급</p></th>
+	            	<td><div class="tb_inner">
+	            		공고서 참조
+	            		</div>
+	            	</td>
+	            	<th scope="row"><p>공동도급비율</p></th>
+	            	<td><div class="tb_inner"></div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>공동도급지역</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+	            		 
+	            		 
+	            		</div> 
+	            	</td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>공동수급체 구성원 지역제한적용여부</p></th>
+	            	<td colspan="3"><div class="tb_inner">공고서에 의함</div></td>
+	       		</tr>
+	       		
+	       		
+					<tr>
+		            	<th scope="row"><p>공동수급 구성업체수제한</p></th>
+		            	<td colspan="3"><div class="tb_inner">공고서에 의함</div></td>
+		       		</tr>
+				
+				
+				
+    		</table>
+		</div>
+		
+		<div class="infoleft"><h3>[투찰제한-공종별 전체 지분율]</h3></div>
+        <div class="results">
+        	<p class="hide">공종별 전체지분을 NO, 공종, 비율의 정보항목으로 정리해 놓은 표입니다.</p>
+			<table class="table_list_licenseAllowTbl2 table_list">
+				<caption><span>투찰제한 정보</span></caption>
+				<colgroup>
+		       	 	<col class="w10p" />
+		       	 	<col class=" " />
+		       	 	<col class="w10p" />
+				</colgroup>
+				<thead>
+					<tr>
+		            	<th scope="col">No.</th>
+		            	<th scope="col">공종</th>
+		            	<th scope="col">비율(%)</th>
+					</tr>
+				</thead>
+					
+					<tbody class="tb_data_none">	
+						<tr>
+							<td colspan="3">공고서에 의함</td>
+						</tr>
+					</tbody>
+					
+					
+			</table>        
+		</div>
+		
+		
+		<div class="infoleft"><h3>[ 
+				            		
+				            		
+				            			기초금액 공개
+				            		 
+				            		]</h3></div>
+		
+		
+		
+			
+				
+					
+				
+			
+		
+		
+				            		
+		<div class='inforight'>[공개시각: 2015/01/31 10:48]</div>
+		
+				
+        <div class="results">
+        	<p class="hide">기초금액 공개를 기초금액, 비고, 상세보기 항목으로 정리해 놓은 표입니다.</p>
+			<table class="table_list_baseEstiPriceTbl table_list">
+				<caption><span>기초금액공개 정보</span></caption>
+				<colgroup>
+		       	 	<col class=" " />
+		       	 	<col class="w25p" />
+		       	 	<col class="w25p" />
+		       	 	<col class="w20p" />
+				</colgroup>
+				<thead>
+					<tr>
+		            	<th scope="col">
+			 	           	
+		            		
+		            		
+		            			기초금액
+		            		 
+		            		
+						</th>
+		            	<th scope="col">비고1</th>
+		                <th scope="col">비고2</th>
+		            	<th scope="col">상세보기</th>
+					</tr>
+				</thead>
+					
+						
+       	    		
+						
+					
+					
+					
+       	    		
+					
+					<tbody>
+						
+							<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+								<td class="tr">23,417,000원</td>
+								<td class="tl"></td>
+								<td class="tl"></td>
+								<td><a class="btn_mdl" href="javascript:baseAmtSrch();" title="기초금액 조회"><span>기초금액 조회</span></a></td>
+							</tr>
+						
+					</tbody>
+					
+			</table>        
+		</div>	
+		
+		
+		
+		
+	
+		
+		
+		<div class="infoleft"><h3>[적격심사]</h3></div>
+        <div class="section">
+        	<p class="hide">적격심사를 평가기준, 주공종, 주공종 추정금액, 가산지역 항목으로 정리해 놓은 표입니다.</p>
+		    <table class="table_info">
+	    	    <caption><span>적격심사를 평가기준, 주공종, 주공종 추정금액, 가산지역 항목으로 정리해 놓은 표입니다.</span></caption>
+	      	  	<colgroup>
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+		       	 	<col class="w18p" />
+		       	 	<col class="w32p" />
+	       	 	</colgroup>
+
+	        	<tr>
+	            	<th scope="row"><p>평가기준</p></th>
+	            	<td>
+	            	<div class="tb_inner">
+	            		
+	            			
+	            			
+	            			    
+	            			        
+			            			    조달청기준
+	            			        
+	            			        
+	            			    
+	            			
+	            			 
+	            	</div>           		
+	            	</td>
+	            	<th scope="row"><p>주공종</p></th>
+	            	<td><div class="tb_inner">시설물유지관리업</div></td>
+	       		</tr>
+	       		<tr>
+	            	<th scope="row"><p>주공종 추정금액</p></th>
+	            	<td colspan="3"><div class="tb_inner">￦23,417,000원</div></td>
+	       		</tr>
+	       		
+	       		
+	       		
+	       		<tr>
+	            	<th scope="row"><p>가산지역(지역업체 참여도)</p></th>
+	            	<td colspan="3"><div class="tb_inner">
+						</div>
+					</td>
+					<!-- 
+						2004.5월 이후로 사용안함
+	            	<th scope="row">신인우수공종</th>
+	            	<td></td>
+	            	-->
+	       		</tr>	       		
+    		</table>
+		</div>
+		
+		<div class="infoleft"><h3>[부대공종]</h3></div>
+        <div class="results">
+        	<p class="hide">부대공종을 NO, 부대공종, 업종평가비율, 추정가격 항목으로 정리해 놓은 표입니다.</p>
+			<table class="table_list table_list_licenseAllowTbl3">
+				<caption><span>투찰제한 정보</span></caption>
+				<colgroup>
+		       	 	<col class="w10p" />
+		       	 	<col class=" " />
+		       	 	<col class="w20p" />
+		       	 	<col class="w20p" />
+				</colgroup>
+				<thead>
+					<tr>
+		            	<th scope="col">No.</th>
+		            	<th scope="col">부대공종</th>
+		            	<th scope="col">업종평가비율</th>
+		            	<th scope="col">추정가격</th>
+					</tr>
+				</thead>
+					
+					<tbody class="tb_data_none">
+						<tr>
+							<td colspan="4">공고서에 의함</td>
+						</tr>
+					</tbody>
+					
+					
+			</table>        
+		</div>
+		
+		<div class="infoleft"><h3>[첨부 파일 ]</h3></div>
+		<div class="results">
+			<p class="hide">첨부파일을 NO, 문서구분 ,파일 정보 항목으로 정리해 놓은 표입니다.</p>
+			<table class="table_list_attchFileTbl table_list">
+				<caption><span>업로드 된 파일 정보</span></caption>
+				<colgroup>
+					<col class="w10p" />
+					<col class="w20p" />
+					<col class="" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col" class="w10p">No.</th>
+						<th scope="col" class="">문서구분</th>
+						<th scope="col" class="">파일명</th>
+					</tr>
+				</thead>
+				
+					
+					
+						<tbody>
+						
+						
+						<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+							<td>1</td>
+							<td>
+								
+								
+									공고서
+								
+								
+								
+								
+								
+								
+							</td>
+							<td class="tl"><div>
+								
+								
+																	
+									<a href="javascript:dtl_fileDownload('20150123585::00::1::1','20150123585-00_1422668775690_공고문.hwp');">20150123585-00_1422668775690_공고문.hwp</a>
+								
+								</div>
+							</td>
+						</tr>
+						
+						
+						
+						
+						<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+							<td>2</td>
+							<td>
+								
+								
+								
+								
+									
+									
+										내역서
+									
+									
+								
+								
+								
+								
+							</td>
+							<td class="tl"><div>
+								
+								
+																	
+									<a href="javascript:dtl_fileDownload('20150123585::00::2::2','20150123585-00_1422668775777_붙임4)산출내역서(경상대학교도서관2층화장실보수공사).xlsx');">20150123585-00_1422668775777_붙임4)산출내역서(경상대학교도서관2층화장실보수공사).xlsx</a>
+								
+								</div>
+							</td>
+						</tr>
+						
+						
+						
+						
+						<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+							<td>3</td>
+							<td>
+								
+								
+								
+								
+									
+									
+										내역서
+									
+									
+								
+								
+								
+								
+							</td>
+							<td class="tl"><div>
+								
+								
+																	
+									<a href="javascript:dtl_fileDownload('20150123585::00::2::3','20150123585-00_1422668775809_붙임2)시방서(도서관화장실보수공사).hwp');">20150123585-00_1422668775809_붙임2)시방서(도서관화장실보수공사).hwp</a>
+								
+								</div>
+							</td>
+						</tr>
+						
+						
+						
+						
+						
+						
+						</tbody>						
+					
+				
+			</table>
+		</div>
+	
+	<!-- 비공개 시담일 경우 개찰결과 끝-->		
+	
+		<div class="infoleft"><h3>[입찰진행현황]</h3></div>
+		<div class="results">
+			<p class="hide">입찰진행현황을 입찰공고번호, 재입찰번호, 공고명, 개찰일시, 진행현황 항목으로 정리해 놓은 표입니다.</p>
+			<table class="table_list_integrationBidResultTbl table_list">
+				<caption><span>입찰진행현황</span></caption>
+				<colgroup>
+					<col class="w16p" />
+					<col class="" />
+					<col class="" />
+					<col class="" />
+					<col class="" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col" class="">입찰공고번호</th>
+						<th scope="col" class="">재입찰번호</th>
+						<th scope="col" class="">공고명</th>
+						<th scope="col" class="">개찰일시</th>
+						<th scope="col" class="">진행현황</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+						<td>20150123585-00</td>
+						<td>0</td>
+						<td class="tl"><div>경상대학교 도서관 2층 열람실 북서쪽 화장실 보수공사</div></td>
+						<td>2015/02/04 11:00</td>
+						<td>
+							
+								
+								
+									
+										
+										
+										
+											<a class="btn_mdl" href="javascript:toDetail('3', '20150123585', '00', '0', '0', '개찰완료');"><span>개찰완료</span></a>
+										
+									
+								
+							
+						</td>
+					</tr>
+				
+				</tbody>
+			</table>
+			<form method="post" id="ebid" name="ebid" action="">
+				<input type="hidden" id="bidno2" name="bidno" value="" />
+				<input type="hidden" id="bidseq2" name="bidseq" value="" />
+				<input type="hidden" id="bidcate2" name="bidcate" value="" />
+				<input type="hidden" id="rebidno2" name="rebidno" value="" />
+				<input type="hidden" id="progressInfo2" name="progressInfo" />
+			</form>
+		</div>
+	
+				
+		<div class="button_wrap">
+		    
+			
+			
+				<div class="button3 mbutton3">
+			    	
+       				
+       				       				
+       				       				
+                    
+       				
+						
+       					
+       						
+       						
+		      					<a class="btn_mdl" href="javascript:history.go(-1);" title="목록"><span>목록</span></a>
+       						
+       					
+                    
+                    
+			    </div>
+			
+			
+		</div>
+		
+    </div>
+
+
+
+
+
+
+
+
+</div>	
+
+
+</body>
+</html>
+<!--/WEB-INF/jsp/ep/invitation/publish/facilBidInfoDtl.jsp
+/ep/invitation/publish/bidInfoDtl.do-->

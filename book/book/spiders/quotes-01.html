@@ -1,0 +1,28 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<title>나라장터: 국가종합전자조달</title>
+<script type="text/javascript" src="/gov/koneps/co/js/crossDomain.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+function refreshFrame() {
+// 	frames['sub'].window.location.href = "/pt/menu/frameTgong.do?url=http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2020/12/16&toBidDt=2021/01/15&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1";
+	top.frames["sub"].location.href = "/pt/menu/frameTgong.do?url=http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2020/12/16&toBidDt=2021/01/15&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1";
+	frames['hdn'].window.document.getElementById("fId").value = "";
+}
+//]]>
+</script>
+</head>
+<frameset cols="100%" rows="105,*,0" onload="refreshFrame();">
+    <frame src="/pt/menu/selectTopFrame.do?appletLaunchYn=&amp;whereAreYouFrom=" name="tops" id="tops" frameborder="0" noresize="noresize" scrolling="no" marginwidth="0" marginheight="0" title="상단 프레임" />
+    <!-- 2014.05.23 : src 수정 - 3종브라우저 호환성문제 해결 -->
+    <frame src="/gov/koneps/pt/main/html/sub/blank.html" name="sub" id="sub" frameborder="0" noresize="noresize" scrolling="yes" marginwidth="0" marginheight="0" title="하단 프레임" />
+    <frame src="/gov/koneps/pt/main/html/sub/index_hidden.html" name="hdn" id="hdn" frameborder="0" noresize="noresize" scrolling="no" marginwidth="0" marginheight="0" title="빈프레임" />
+</frameset>
+</html>
+<!--/WEB-INF/jsp/pt/menu/frame.jsp
+/pt/menu/selectSubFrame.do-->

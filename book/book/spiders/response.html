@@ -1,0 +1,447 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+
+
+ 
+
+<title>입찰공고 목록</title>
+
+
+
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/body.css" />
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/width.css" />
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie.css" />
+<![endif]-->
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie8.css" />
+<![endif]-->
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie7.css" />
+<![endif]-->
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="/gov/koneps/co/css/ie6.css" />
+<script src="/gov/koneps/co/js/png_ie6.js" type="text/livescript"></script>
+<script language="javascript" type="text/javascript">
+//<![CDATA[
+DD_belatedPNG.fix('.png, .win, .btn_mdl, .btn_view, span, strong, img, li');  // png 이미지 적용
+//]]>
+</script>
+<![endif]-->
+
+
+
+
+
+
+ 
+
+
+
+<script type="text/javascript" src="/gov/koneps/co/js/datepicker.js"></script>
+<script type="text/javascript" src="/gov/koneps/ep/tbid/js/tbidBanner.js"></script>
+
+
+<script type="text/javascript" src="/gov/koneps/co/js/crossDomain.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/popup.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/wz_tooltip.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/validator.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/js/util.js"></script>
+<script type="text/javascript" src="/gov/koneps/co/jquery/js/jquery-1.6.2.min.js?1610759308093"></script>
+<script type="text/javascript" src="/gov/koneps/ep/co/js/bidUtil.js"></script>
+<script type="text/javascript" src="/gov/koneps/ep/co/js/bidLink.js?1610759308093"></script>
+<script type="text/javascript" src="/gov/koneps/ep/co/js/epDialog.js?1610759308093"></script>
+
+<script type="text/javascript"> 
+//<![CDATA[
+	function toSrch(){
+		window.location.href = "/ep/tbid/tbidFwd.do?area=&bidNm=%B5%B5%BC%AD&bidSearchType=1&fromBidDt=2015%2F04%2F15&fromOpenBidDt=&instNm=&radOrgan=1&regYn=Y&searchDtType=1&searchType=1&taskClCds=&toBidDt=2015%2F05%2F15&toOpenBidDt=";
+	}
+//]]>
+</script>
+
+
+
+
+</head>
+<body>
+
+
+
+	<div id="content_wrap">
+	<div id="content_header">
+		<h2>입찰공고 목록</h2>
+		<div id='help'><button type='button' id='btn_help' title='새창열림' onclick="javascript:util_viewOnlineManual('/WEB-INF/jsp/ep/tbid/tbidList.jsp','','/WEB-INF/jsp/ep/tbid/tbidList.jsp','/ep/tbid/tbidList.do','null');"><span>온라인매뉴얼</span></button></div>
+	</div>
+
+
+	
+
+	<div id="container">
+		<form id="resultForm" name="resultForm" method="post" action="">
+			<input type="hidden" id="tbidno" name="tbidno" value="" />
+			<input type="hidden" id="bidseq" name="bidseq" value="" />		
+			<p class="btn_description dx"><a href="javascript:void(0);" class="desc_open"><span class="hide">설명글 열기/닫기</span></a></p>
+				<div class="description mdx2">
+					<ol>
+						<li>공동수급,투찰 항목의 버튼을 누르면 공동수급협정서, 입찰참가신청서, 입찰서를 온라인으로 제출할 수 있습니다.</li>
+						<li>연계기관 공고건인 경우 새창 버튼(<button type="button" class="btn_newwin" style="cursor: none"><span class="blind">연계기관링크이미지</span></button>)을 클릭하면 해당기관 사이트로 이동하여 입찰공고 목록 또는 상세화면을 조회할 수 있습니다.</li>
+						<li><strong class='maroon'>일반투찰</strong> : 기존 인증서로 투찰이 가능한 입찰(단, 지문보안토큰으로도 투찰이 가능)</li>
+						<li><strong class='maroon'>지문투찰</strong> : 지문보안토큰으로만 투찰이 가능한 입찰(단, <strong class='blue'>지문인식 신원확인 예외적용 신청서를 제출한 입찰자 또는 지문인식 신원확인 예외자로 등록된 입찰자는 기존 인증서로 투찰</strong>이 가능)</li>
+					</ol>
+				</div>
+				
+
+				<div class="results">
+					
+					<p class="hide">입찰공고목록조회:업무,공고번호-차수,분류,공고명,수요기관,공고기관,계약방법,입찰마감일시,공동수급,수수료,투찰 정보제공</p>
+					<table summary="입찰공고목록조회:업무,공고번호-차수,분류,공고명,수요기관,공고기관,계약방법,입찰마감일시,공동수급,수수료,투찰 정보제공" class="table_list_tbidTbl table_list">
+						<caption><span>입찰공고목록조회</span></caption>
+						<colgroup>
+							<col class="w5p" />
+							<col class="w12p" />
+							<col class="w5p" />
+							<col />
+							<col class="w10p" />
+							<col class="w10p" />
+							<col class="w10p" />
+							<col class="w14p" />
+							<col class="w6p" />
+							<!-- col class="w6p" /-->
+							<col class="w6p" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th>업무</th>
+								<th>공고번호-차수</th>
+								<th>분류</th>
+								<th>공고명</th>
+								<th>공고기관</th>
+								<th>수요기관</th>
+								<th>계약방법</th>
+								<th>입력일시<br />(입찰마감일시)</th>
+								<th>공동<br />수급</th>
+								<!--th>수수료</th-->
+								<th>투찰</th>
+							</tr>
+						</thead>
+						
+
+						
+						<tbody>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>용역</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516619&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=5 ">20150516619-00</a></div></td>
+									
+										
+										
+										   <td><div>긴급</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516619&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=5 ">공주대학교 자료도서관 지정폐기물 처리용역</a></div></td>
+									<td class="tl"><div>공주대학교</div></td>
+									<td class="tl"><div>공주대학교</div></td>
+									<td class="tl"><div>일반(총액)</div></td>
+									<td class="tc"><div>2015/05/15 17:25<br /><span class="blue">(2015/05/22 10:00)</span></div></td>
+									<td class="tc"><div>마감</div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>공사</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516593&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=3 ">20150516593-00</a></div></td>
+									
+										
+										
+										   <td><div>긴급</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516593&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=3 ">공주대학교 자료도서관 석면해체 제거공사</a></div></td>
+									<td class="tl"><div>공주대학교</div></td>
+									<td class="tl"><div>공주대학교</div></td>
+									<td class="tl"><div>수의(소액)</div></td>
+									<td class="tc"><div>2015/05/15 17:14<br /><span class="blue">(2015/05/22 10:00)</span></div></td>
+									<td class="tc"><div></div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>공사</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516564&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=3 ">20150516564-00</a></div></td>
+									
+										
+										
+										   <td><div>긴급</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516564&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=3 ">공주대학교 자료도서관 천정 교체공사</a></div></td>
+									<td class="tl"><div>공주대학교</div></td>
+									<td class="tl"><div>공주대학교</div></td>
+									<td class="tl"><div>지역제한</div></td>
+									<td class="tc"><div>2015/05/15 17:06<br /><span class="blue">(2015/05/22 10:00)</span></div></td>
+									<td class="tc"><div></div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>용역</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8101/ep/tbid/serviceBidDtl.do?tbidno=20150517668&amp;bidseq=00">E011503747-00</a></div></td>
+									
+										
+										
+										   <td><div>일반</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8101/ep/tbid/serviceBidDtl.do?tbidno=20150517668&amp;bidseq=00">2015년도 서산지사 사옥청소용역</a></div></td>
+									<td class="tl"><div>한국전력공사</div></td>
+									<td class="tl"><div>대전충남지역본부/기획관리실</div></td>
+									<td class="tl"><div>제한(총액)</div></td>
+									<td class="tc"><div>2015/05/15 17:00<br /><span class="blue">(2015/05/26 13:00)</span></div></td>
+									<td class="tc"><div></div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div><button type="button" class="btn_newwin" onclick="toLinkURL('http://srm.kepco.net','한국전력공사');return false;" title="한국전력공사 이동 새창"><span class="blind">한국전력공사 이동</span></button></div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>물품</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515091&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">20150515091-00</a></div></td>
+									
+										
+										
+										   <td><div>일반</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515091&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">2015년 구립도서관 정기4차 도서구입</a></div></td>
+									<td class="tl"><div>광주광역시 북구</div></td>
+									<td class="tl"><div>광주광역시 북구</div></td>
+									<td class="tl"><div>수의(총액)소액수의</div></td>
+									<td class="tc"><div>2015/05/15 16:59<br /><span class="blue">(2015/05/21 10:00)</span></div></td>
+									<td class="tc"><div></div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>용역</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515913&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">20150515913-00</a></div></td>
+									
+										
+										
+										   <td><div>일반</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515913&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">제6차년도 서울교육종단연구 패널데이터 조사 용역</a></div></td>
+									<td class="tl"><div>조달청 서울지방조달청</div></td>
+									<td class="tl"><div>서울특별시교육청 서울특별시교육연구정보원</div></td>
+									<td class="tl"><div>제한(총액)협상에의한계약</div></td>
+									<td class="tc"><div>2015/05/15 16:40<br /><span class="blue">(2015/05/27 16:00)</span></div></td>
+									<td class="tc"><div>마감</div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>공사</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516436&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=3 ">20150516436-00</a></div></td>
+									
+										
+										
+										   <td><div>일반</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516436&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=3 ">진영도서관 조도개선 및 냉난방기 간선 전기공사 전자견적 제출</a></div></td>
+									<td class="tl"><div>경상남도교육청 경상남도김해교육지원청</div></td>
+									<td class="tl"><div>경상남도교육청 경상남도김해교육지원청</div></td>
+									<td class="tl"><div>수의(소액)</div></td>
+									<td class="tc"><div>2015/05/15 16:39<br /><span class="blue">(2015/05/22 10:00)</span></div></td>
+									<td class="tc"><div></div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>물품</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515791&amp;bidseq=01&amp;releaseYn=Y&amp;taskClCd=1 ">20150515791-01</a></div></td>
+									
+										
+										   <td><div><strong class="maroon">변경</strong></div></td>
+										
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515791&amp;bidseq=01&amp;releaseYn=Y&amp;taskClCd=1 ">대현도서관 개관 도서 구입(긴급)</a></div></td>
+									<td class="tl"><div>대구광역시 북구</div></td>
+									<td class="tl"><div>대구광역시 북구</div></td>
+									<td class="tl"><div>제한(총액)</div></td>
+									<td class="tc"><div>2015/05/15 16:09<br /><span class="blue">(2015/05/21 10:00)</span></div></td>
+									<td class="tc"><div>마감</div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>물품</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516120&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">20150516120-00</a></div></td>
+									
+										
+										
+										   <td><div>일반</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150516120&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">2015년 1차 도서구입 소액수의 견적제출 안내공고</a></div></td>
+									<td class="tl"><div>대구광역시교육청 대구광역시동부교육청 황금중학교</div></td>
+									<td class="tl"><div>대구광역시교육청 대구광역시동부교육청 황금중학교</div></td>
+									<td class="tl"><div>수의(총액)소액수의</div></td>
+									<td class="tc"><div>2015/05/15 15:07<br /><span class="blue">(2015/05/21 10:00)</span></div></td>
+									<td class="tc"><div></div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+								<tr onmouseover="this.className='on'" onmouseout="this.className=''">
+									<td><div>물품</div></td>
+									<td><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515934&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">20150515934-00</a></div></td>
+									
+										
+										
+										   <td><div>긴급</div></td>
+																			
+																		
+									<td class="tl"><div><a href="http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20150515934&amp;bidseq=00&amp;releaseYn=Y&amp;taskClCd=1 ">[긴급]2015년 제2차 도서구입 재공고</a></div></td>
+									<td class="tl"><div>충청남도교육청 충청남도서천교육지원청 서천도서관</div></td>
+									<td class="tl"><div>충청남도교육청 충청남도서천교육지원청 서천도서관</div></td>
+									<td class="tl"><div>제한(총액)</div></td>
+									<td class="tc"><div>2015/05/15 14:52<br /><span class="blue">(2015/05/19 12:00)</span></div></td>
+									<td class="tc"><div></div></td>
+									<!--td class="tc"></td-->
+									<td class="tc"><div>마감</div></td>
+								</tr>
+							
+						</tbody>
+						
+					</table>
+				</div>
+				
+				
+				<script type="text/javascript"> 
+//<![CDATA[ 
+function to_more(arg){ 
+	var currentPageNo = Number(document.getElementById("currentPageNo").value) + arg; 
+	var maxPageViewNoByWshan = Number(document.getElementById("maxPageViewNoByWshan").value) + 1; 
+	var currListUrl = "/ep/tbid/tbidList.do?area=&bidNm=%B5%B5%BC%AD&bidSearchType=1&fromBidDt=2015%2F04%2F15&fromOpenBidDt=&instNm=&radOrgan=1&regYn=Y&searchDtType=1&searchType=1&taskClCds=&toBidDt=2015%2F05%2F15&toOpenBidDt="; 
+	var mainUrl = currListUrl.substr(0, currListUrl.indexOf("?")+1); 
+	var paramUrl = currListUrl.substr(currListUrl.indexOf("?")+1); 
+	var reqArry = paramUrl.split("&"); 
+	var nextUrl = mainUrl; 
+	 
+	for(var i = 0 ; i < reqArry.length ; i++){ 
+		if(reqArry[i].indexOf("currentPageNo") >= 0){ 
+			nextUrl += "currentPageNo="+currentPageNo + "&"; 
+		} else if(reqArry[i].indexOf("maxPageViewNoByWshan") >= 0){ 
+			nextUrl += "maxPageViewNoByWshan="+maxPageViewNoByWshan + "&"; 
+		} else { 
+			nextUrl += reqArry[i]+"&"; 
+		} 
+	} 
+	 
+	if(nextUrl.indexOf("currentPageNo") < 0){ 
+		nextUrl += "currentPageNo=" + currentPageNo + "&"; 
+	} 
+	if(nextUrl.indexOf("maxPageViewNoByWshan") < 0){ 
+		nextUrl += "maxPageViewNoByWshan=" + maxPageViewNoByWshan + "&"; 
+	} 
+	 
+	window.location.href = nextUrl; 
+} 
+function to_page(arg){ 
+	var currentPageNo = arg; 
+	var maxPageViewNoByWshan = Number(document.getElementById("maxPageViewNoByWshan").value); 
+	var currListUrl = "/ep/tbid/tbidList.do?area=&bidNm=%B5%B5%BC%AD&bidSearchType=1&fromBidDt=2015%2F04%2F15&fromOpenBidDt=&instNm=&radOrgan=1&regYn=Y&searchDtType=1&searchType=1&taskClCds=&toBidDt=2015%2F05%2F15&toOpenBidDt="; 
+	var mainUrl = currListUrl.substr(0, currListUrl.indexOf("?")+1); 
+	var paramUrl = currListUrl.substr(currListUrl.indexOf("?")+1); 
+	var reqArry = paramUrl.split("&"); 
+	var nextUrl = mainUrl; 
+	 
+	for(var i = 0 ; i < reqArry.length ; i++){ 
+		if(reqArry[i].indexOf("currentPageNo") >= 0){ 
+			nextUrl += "currentPageNo="+currentPageNo + "&"; 
+		} else if(reqArry[i].indexOf("maxPageViewNoByWshan") >= 0){ 
+			nextUrl += "maxPageViewNoByWshan="+maxPageViewNoByWshan + "&"; 
+		} else { 
+			nextUrl += reqArry[i]+"&"; 
+		} 
+	} 
+	 
+	if(nextUrl.indexOf("currentPageNo") < 0){ 
+		nextUrl += "currentPageNo=" + currentPageNo + "&"; 
+	} 
+	if(nextUrl.indexOf("maxPageViewNoByWshan") < 0){ 
+		nextUrl += "maxPageViewNoByWshan=" + maxPageViewNoByWshan + "&"; 
+	} 
+	 
+	window.location.href = nextUrl; 
+} 
+//]]> 
+</script> <div id="pagination"> <strong><span title="현재페이지">1</span></strong>  <a href="javascript:to_more(1);" class="default">+ 더보기</a></div>
+
+				<input type="hidden" id="currentPageNo" name="currentPageNo" value="1" />
+				<input type="hidden" id="maxPageViewNoByWshan" name="maxPageViewNoByWshan" value="1" />
+				
+				<div class="button_wrap">
+					<div class="button">
+						<a class="btn_mdl" href="javascript:toSrch();"><span>검색화면으로 이동</span></a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+<!--/WEB-INF/jsp/ep/tbid/tbidList.jsp
+/ep/tbid/tbidList.do-->
