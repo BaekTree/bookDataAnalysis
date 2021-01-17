@@ -9,43 +9,43 @@ class BookSpider(scrapy.Spider):
     def start_requests(self):
         user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
         headers = {'User-Agent': user_agent}
-        start_url = 'http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2015/01/01&toBidDt=2015/02/01&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1'
+        start_url = 'http://www.g2b.go.kr/pt/menu/selectSubFrame.do?framesrc=/pt/menu/frameTgong.do?url=http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2020/12/17&toBidDt=2021/01/16&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1'
 
         yield scrapy.Request(url = start_url, callback = self.parse, meta={'start_url':start_url})
 
     def parse(self, response):
     
 
-        # print("\n\n\n\n---------- THIS IS PARSE RESULT ----------\n")
-
+        print("\n\n\n\n---------- THIS IS PARSE RESULT ----------\n")
+        print(response)
         # 공고 announcement 파악
-        ans=response.xpath("//*[@id='resultForm']/div[2]/table/tbody/tr[2]/td[4]/div/a[1]/@href").extract()
+        # ans=response.xpath("//*[@id='resultForm']/div[2]/table/tbody/tr[2]/td[4]/div/a[1]/@href").extract()
         # print(ans)
         # print(response.xpath("//*[@id='resultForm']/div[2]/table/tbody/tr[2]/td[4]/div/a[1]/@href").extract())
 
         # 마감 여부 # 투찰 마감이 되어야 실제 어떻게 사람들이 입찰했는지 정보 파악 가능. 마감 표시가 없으면 정보 자체가 없다!
-        isEnd=response.xpath("//*[@id='resultForm']/div[2]/table/tbody/tr[2]/td[10]/div/text()").extract()
+        # isEnd=response.xpath("//*[@id='resultForm']/div[2]/table/tbody/tr[2]/td[10]/div/text()").extract()
         # print(isEnd)
 
 
         # for 문 만들 때 이거 사용하기!
         # if endStr != None:
-        endStr=isEnd[0]
+        # endStr=isEnd[0]
         # print(endStr)
 
-        if endStr == "마감":
+        # if endStr == "마감":
             # print(True)
 
             
-            ansUrl=ans[0]
+            # ansUrl=ans[0]
             # print(ansUrl)
-            yield scrapy.Request(url = ansUrl, callback = self.parseAnnouncement)
+            # yield scrapy.Request(url = ansUrl, callback = self.parseAnnouncement)
         
 
 
         
 
-        # print("\n----------------------------------------\n\n\n\n")
+        print("\n----------------------------------------\n\n\n\n")
 
     def parseAnnouncement(self, ansRes):
         
