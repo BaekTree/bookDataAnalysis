@@ -4,38 +4,41 @@ import requests
 import json
 from scrapy.http import FormRequest
 
+import pandas as pd
+
 class BookSpider(scrapy.Spider):
     name = "book"
-    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
+    # user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
+    # start_rul="http://auto.naver.com/bike/mainList.nhn"
+    start_urls = ["http://www.g2b.go.kr:8081/ep/invitation/publish/bidInfoDtl.do?bidno=20160514754&bidseq=00&releaseYn=Y&taskClCd=1"]
 
-
-    def start_requests(self):
-        user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
-        headers = {'User-Agent': user_agent}
-        # start_url = 'http://www.g2b.go.kr:8101/ep/result/facilBidResultDtl.do'
-        start_urls=["http://auto.naver.com/bike/mainList.nhn"]
-        # start_url="http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2016/04/15&toBidDt=2016/05/15&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1"
-
-        custom_settings= {
-            'DOWNLOADER_MIDDLEWARES': { 
-                'crawler.middlewares.BookDownloaderMiddleware': 100 
-            }
-        }   
-
-        # done="개찰완료".encode('euc-kr')
-
-        # payload={'bidno': '20160514664', 'bidseq': '00', 'bidcate' : '0', 'rebidno': '0', 'progressInfo':done }
-        # yield scrapy.Request(url = start_url, method="POST", body=json.dumps(payload),callback = self.parse)
-
-        
+    custom_settings= {
+        'DOWNLOADER_MIDDLEWARES': { 
+            'book.middlewares.BookDownloaderMiddleware': 100 
+        }
+    }
 
     def parse(self, response):
-    
-
         print("\n\n\n\n---------- THIS IS PARSE RESULT ----------\n")
-        print(response)
+        # print(response.text)
         # print(response.xpath("//*").extract())
+
+        # url = response.url
         
+        tb=pd.read_html(response.text)
+
+        # type of tb : list
+        # print(type(tb))
+        
+        # 2nd table is our target
+        # for (i,t) in enumerate(tb):
+        #     print("" + str(i) + "th table : ")
+        #     print(t)
+
+        print(tb[1])
+
+        
+
 
 
         
