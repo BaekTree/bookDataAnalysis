@@ -77,367 +77,6 @@ http://www.g2b.go.kr:8101/ep/result/facilBidResultDtl.do으로 post으로 보낸
 공고 상세 페이지의 함수들은 이렇게 생겼다.
 공고 상세 페이지 : http://www.g2b.go.kr/pt/menu/selectSubFrame.do?framesrc=/pt/menu/frameTgong.do?url=http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2020/12/17&toBidDt=2021/01/16&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1
 
-```
- 
-//<![CDATA[
-	function toBidDtl(bidseq){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var taskClCd = f.taskClCd.value;
-		var popUpYn = f.popUpYn.value;
-		location.href="/ep/invitation/publish/bidInfoDtl.do?bidno="+bidno+"&bidseq="+bidseq+"&taskClCd="+taskClCd+"&releaseYn=Y&popUpYn="+popUpYn;
-	}
-	
-	function bidAppendInfo(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var taskClCd = f.taskClCd.value;
-
-		var url = '/ep/execution/compete/fwdNomiCompetDataDtlPop.do?nomiPerfClCd=1&bidno='+bidno+'&bidseq='+bidseq;
-		popup_openWindowScroll(url, '840', '550', '');
-	}
-	
-	function bidDepositPay(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-
-		bidLink_payWarr('1', bidno, bidseq);
-		//var url = '/ep/join/bidding/listItemBidcate.do?bidno='+bidno+'&bidseq='+bidseq;//입찰보증금 납부결과
-		//popup_openWindowScroll(url, '840', '550', '');
-	}
-	
-	function propodocOnlineSrch(bidcate, uiGubun){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var url = "http://www.g2b.go.kr:8082/ep/execution/eproposal/chkFwdInsertPropoDocFileCont.do"
-					+ "?bidno=" + bidno
-					+ "&bidseq=" + bidseq
-					+ "&bidcate=" + bidcate
-					+ "&uiType=Y"
-					+ "&uiGubun=" + uiGubun;
-		popup_openWindowScroll(url, '840', '550', '');
-	}
-	
-	function baseAmtSrch(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var taskClCd = f.taskClCd.value;
-		var bidContractMethodCd = f.bidContractMethodCd.value;
-		//if(taskClCd == '9')taskClCd='5';
-		
-		url = "/ep/price/baseamt/selectBaseAmtDtlPopup.do"
-				+ "?taskClCd=" + taskClCd
-				+ "&bidno=" + bidno
-				+ "&bidseq=" + bidseq;
-		
-		popup_openWindowScroll(url, '840', '550', '');
-	}
-	
-	function jointSppAgtSubmit(type){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var url;
-
-		if(type == '1'){
-			bidLink_rebiddingProd(bidno, bidseq);
-		}
-		if(type == '2'){//라운드
-			goAppActionRound(bidno, bidseq);
-		}
-		if(type == '3'){//복수경쟁
-			bidLink_jointSppAgtProd(bidno, bidseq);
-		}
-		if(type == '4'){//투찰
-			bidLink_jointSppAgtProd(bidno, bidseq);
-		}
-	}
-	
-	function feePay(type){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var url;
-		
-		if(type == '1'){
-			bidLink_rebiddingProd(bidno, bidseq);
-		}
-		if(type == '2'){
-			bidLink_payFee(bidno, ' ');
-		}
-	}
-	
-	function reBidding(type){
-		if(checkIsOpenPage() == true){
-			return;
-		}
-		
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		
-		bidLink_rebiddingProd(bidno, bidseq);
-	}
-	
-	function bidding(type){
-		if(checkIsOpenPage() == true){
-			return;
-		}
-		
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		
-		if(type == '1'){//라운드
-			bidLink_biddingProd(bidno, bidseq);
-		}
-	}
-	
-	function fgprtBidding(){
-		if(checkIsOpenPage() == true){
-			return;
-		}
-		
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		bidLink_biddingProdAndBidMsg(bidno, bidseq);
-	}
-	
-	function genBidding(){
-		if(checkIsOpenPage() == true){
-			return;
-		}
-		
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		bidLink_biddingProdAndBidMsg(bidno, bidseq);
-	}
-	
-	function checkIsOpenPage(){
-		if('' == 'Y'){
-			alert('현재 화면에서 투찰할 수 없습니다.\r\n[입찰정보]-[각업무]-[공고현황]에서 해당 공고 검색 후 투찰하십시오.');
-			return true;
-		}
-		return false;
-	}
-		
-	function bidInfoInit(){
-		//
-	}
-	
-	function lawSrch(lawId, joNo,note){
-		popup_law('law_001',lawId, joNo, note);	
-	}
-	
-	function prodListExcel(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		location.href="/ep/invitation/publish/prodListExcel.do?bidno="+bidno+"&bidseq="+bidseq;
-	}
-	//실적심사 작성
-	function perfExamSpec(){
-		var f = document.frmDtl;
-		var taskClCd = f.taskClCd.value;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		//var openbidDtStart 	= f.openBidDt.value;
-		//var openbidDtEnd	= f.openBidDt.value;
-		var bidDtStart 	= "2021/01/15 17:32".substring(0,10);
-		var bidDtEnd	= "2021/01/15 17:32".substring(0,10);
-		if(isLogin() == false){
-			return;
-		}
-		var url = "/ep/execution/perfexam/listPagePerfExamBid.do?taskClCd="+taskClCd+"&bidno="+bidno+
-					"&bidseq="+bidseq+
-					"&bidDtStart="+bidDtStart+
-					"&bidDtEnd="+bidDtEnd;
-		/*
-		var url = "/ep/execution/perfexam/listPagePerfExamReqDoc.do?taskClCd="+taskClCd+"&bidno="+bidno+
-					"&bidseq="+bidseq+
-					"&openbidDtStart="+openbidDtStart+
-					"&openbidDtEnd="+openbidDtEnd;
-		*/
-		
-		location.href=url;
-	}
-	//적격심사 신청서
-	function itemQevalReqDoc(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var fromOpenbidYmd 	= f.openBidDt.value;
-		var toOpenbidYmd	= f.openBidDt.value;
-		var taskClCd = f.taskClCd.value;
-		var qevalClCd;
-		if(isLogin() == false){
-			return;
-		}
-		
-		if(taskClCd == "1"){//물품
-			qevalClCd = "1";
-		}else if(taskClCd == "9"){//용역
-			qevalClCd = "3";
-		}else{
-			alert("업무구분코드가 없습니다.");
-			return;
-		}
-		
-		var url = "http://www.g2b.go.kr:8084/ep/eval/general/qevalTgNtcdocRcvList.do?bidno="+bidno+
-				"&qevalClCd="+qevalClCd+
-				"&fromOpenbidYmd="+fromOpenbidYmd+
-				"&toOpenbidYmd="+toOpenbidYmd;
-		location.href=url;
-	}
-	//기출평가제안서
-	function propoDocSumbit(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		if(isLogin() == false){
-			return;
-		}
-		var url = "/ep/execution/eproposal/listPagePropoDocSubmitBid.do?taskClCd=1&bidno="+bidno+
-					"&bidseq="+bidseq;
-		
-		location.href=url;
-	}
-	//로그인 체크
-	function isLogin(){
-		var f = document.frmDtl;
-		var loginId = f.loginId.value;
-		if(loginId == ''){
-			alert('로그인 이후 사용하시기 바랍니다.');
-			return false;
-		}
-		return true;
-	}
-	function toList(){
-		var f = document.frmDtl;
-		var url = "javascript:history.go(-1)";
-		if(url.indexOf('/ep/tbid/tbidList.do') < 0){
-			url = '/ep/tbid/tbidFwd.do?bidSearchType=1';
-		}
-  		location.href = url;
-  	}
-	function toMyBidMng(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var taskClCd = f.taskClCd.value;
-		location.href = "/ep/invitation/mybid/selectMyBidDtl.do?taskClCd="+taskClCd+"&bidno="+bidno+"&bidseq="+bidseq;
-	}
-	//찜하기
-	function toDibsBid(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		
-		var url = '/ep/bidcenter/checkEpDibsBid.do?bidno='+bidno+'&bidseq='+bidseq;
-		popup_openWindowScroll(url, '650', '500', 'popup1');
-	}
-	//표준공고서 보기
-	function toBidDocView(){
-		var f = document.frmDtl;
-  		var bidno			= f.bidno.value;
-  		var bidseq			= f.bidseq.value;
-  		var taskClCd 		= f.taskClCd.value;
-  		var url = "/ep/invitation/publish/bidXmlDocView.do?bidno="+bidno+"&bidseq="+bidseq+"&taskClCd="+taskClCd;
-		popup_openWindowScroll(url, 860, 500, 'bidDoc');
-	}
-	
-	// 개찰결과 상세
-	function toDetail(taskClCd, bidno, bidseq, bidcate, rebidno, progressInfo){
-		var dtlUrl = "";
-		
-		if(taskClCd == "1" || taskClCd == "9"){	// 물품, 조달청 일반용역 
-			dtlUrl = nquryhost + "/ep/result/prodBidResultDtl.do";
-		}
-		if(taskClCd == "2"){	// 외자 
-			dtlUrl = nquryhost + "/ep/result/selectFrnBidResultDtl.do";
-		}
-		if(taskClCd == "3"){	// 공사
-			dtlUrl = nquryhost + "/ep/result/facilBidResultDtl.do";
-		}
-		if(taskClCd == "4"){	// 비축
-			dtlUrl = nquryhost + "/ep/result/stplBidResultDtl.do";
-		}
-		if(taskClCd == "5"){	// 용역
-			dtlUrl = nquryhost + "/ep/result/serviceBidResultDtl.do";
-		}
-		if(taskClCd == "6" || taskClCd == "7"){	// 리스
-			dtlUrl = nquryhost + "/ep/result/leaseBidResultDtl.do";
-		}
-		
-		document.ebid.bidno.value = bidno;
-		document.ebid.bidseq.value = bidseq;
-		document.ebid.bidcate.value = bidcate;
-		document.ebid.rebidno.value = rebidno;
-		document.ebid.progressInfo.value = progressInfo;
-		document.ebid.method = "post";
-		document.ebid.action = dtlUrl;
-		document.ebid.submit();
-		return;
-	}
-
-	// 개찰결과 입찰분류 목록 페이지 이동
-	function toCateList(taskClCd, bidno, bidseq){
-		var cateListUrl = "";
-		
-		if(taskClCd == "1" || taskClCd == "9"){	// 물품
-			cateListUrl = nquryhost + "/ep/result/prodBidResultCateList.do";
-		}
-		if(taskClCd == "2"){	// 외자
-			cateListUrl = nquryhost + "/ep/result/listFrnBidResultCate.do";
-		}
-		if(taskClCd == "4"){	// 비축
-			cateListUrl = nquryhost + "/ep/result/stplBidResultCateList.do";
-		}
-		if(taskClCd == "6" || taskClCd == "7"){	// 리스
-			cateListUrl = nquryhost + "/ep/result/leaseBidResultCateList.do";
-		}
-		
-		document.ebid.bidno.value = bidno;
-		document.ebid.bidseq.value = bidseq;
-		document.ebid.method = "post";
-		document.ebid.action = cateListUrl;
-		document.ebid.submit();
-		return;
-	}
-	
-	function toBidCenterMain(){
-		document.to_main.target = "_self";
-		document.to_main.action = "/ep/bidcenter/bidCenterMain.do";
-		document.to_main.method = "post";
-		document.to_main.submit();
-	}
-	
-	function toDidsBidList(){
-		document.to_main.target = "_self";
-		document.to_main.action = document.to_main.dibsUrl.value;
-		document.to_main.method = "post";
-		document.to_main.submit();
-	}
-	
-	function toStdDocEvalResult(){
-		var f = document.frmDtl;
-		var bidno = f.bidno.value;
-		var bidseq = f.bidseq.value;
-		var taskClCd = f.taskClCd.value;
-
-		var url = '/ep/execution/techscore/searchStdDocEvalPopup.do?popup=Y&bidno='+bidno+'&bidseq='+bidseq;
-		popup_openWindowScroll(url, '840', '550', '');
-	}
-//]]>
-
-```
-
 여기에서 자바스크립트 toDetail함수는 이렇게 생겼다.
 ```
 	// 개찰결과 상세
@@ -616,8 +255,10 @@ scrapy.Request는 스크래피에서 사용하는 일반적인 request함수이�
         done="개찰완료".encode('euc-kr')
 
         payload={'bidno': '20160514664', 'bidseq': '00', 'bidcate' : '0', 'rebidno': '0', 'progressInfo':done }
-        yield scrapy.Request(url = start_url, method="POST", body=json.dumps(payload),callback = self.pa
+        yield scrapy.Request(url = start_url, method="POST", body=json.dumps(payload),callback = self.parse
 ```
+
+아니 도대체 뭐가 됐다는거야. 다시 에러 나면서 안되는데.
 
 post에 body을 안넣기도 하고... json.dump으로 해서 fs을 지정하라는 말을 듣기도 했지만... 우여곡절 긑에 가져오기 성공!
 
@@ -686,3 +327,160 @@ spider에서 middleware을 사용한다고 설정했다.
 spider에서 기본 약식 형태를 사용
 
 이제 tr을 pandas으로 자동으로 변환할 수 있는지 알아보자.
+
+pandas.read_html을 통해서 바로 추출해낼 수 있다.
+
+이제 1개의 공고에 대해서 데이터를 추출해낼 수 있으니 다수의 공고에 대해서 데이터를 추출해보자!
+
+최근 3달까지 검색이 가능하다. 
+그리고 다음 페이지 버튼이 있다. 
+각 페이지에는 각 공고들이 있다.
+
+각 페이지에서 각 공고들의 url을 모두 수집한다.
+
+이것을 모든 페이지에 반복한다.
+
+그러면 3달짜리의 모든 url을 수집할 수 있다. 각 url만 있으면 지금까지 한 것들을 반복문을 반복.
+
+
+
+
+## 자동화를 위한 url 진입 구조
+3개월 경기도 검색 결과
+http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2016/04/15&toBidDt=2016/05/15&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1
+
+2016 04 15 부터 2016 05 15까지다.
+
+이걸 최근으로 바꿔보자
+http://www.g2b.go.kr:8101/ep/tbid/tbidList.do?taskClCds=&bidNm=%B5%B5%BC%AD&searchDtType=1&fromBidDt=2020/11/01&toBidDt=2020/12/01&fromOpenBidDt=&toOpenBidDt=&radOrgan=1&instNm=&area=&regYn=Y&bidSearchType=1&searchType=1
+
+여기에서 링크를 수집.
+
+그런데 수집할 때... 업무가 물품
+
+개찰완료 버튼
+나에게 필요한 정보는... 공고번호!가 아니라... 어차피 클릭으로 할 것이니까...
+
+의사코드
+```
+start_url = [...]
+
+scrapy request
+
+parse
+	
+```
+
+
+
+지금 상황
+
+selenium으로 바꾸고 나서 ... 검색을 할 수 있다.
+각 페이지가 나오면 특정 페이지의 공고로 가서 pandas을 이용해서 해당 데이터를 뽑을 수 있다.
+
+문제점 : 동시에 안된다. 
+하려면 이전 페이지로 돌아와서 다시 해야 한다...
+
+동적으로 하려면? 
+scrapy와 selenium을 같이 사용할 수 있을까?
+
+함수 마다 다른 미들웨어를 사용할 수 있을까?
+
+
+만약에 1년치의 결과를 한꺼번에 추출한다면? 
+일단 12개의 페이지가 있어야 한다.
+이걸 동시에 어떻게? 
+
+페이지를 12개를 연다. 
+각 페이지를... 보낸다. selenium으로.
+selenium에서 그걸 한다. 그게 뭐지? 그 그'
+form을 입력해서 click search
+
+한 response에서... 몇개의 공고가 나온다. 
+각 공고를... 다시 selenium으로 보낸다. 동적 페이지를 연다. 
+각 세부 공고 페이지를 pandans으로 연다. 
+
+즉 2개의 selenium을 사용해야 한다. 
+
+middleware downloader 함수를 하나 더 만들어서
+각 함수 안에 끼워넣는다면?
+
+3개월 씩 보내서...
+3개월 짜리 1개를 보냈다고 하자. 
+그럼 값이 나온다. 
+그리고... ? 
+페이지가 나온다. 그러면?
+
+거기에서 다시 1개씩... 받는다. url만 따오면 된다. 그냥 스크립트로 짜면?
+web driver가... 그... multithreading에 대해서 의도하는대로 안된다고 한다...
+
+그래서 어떻게? 
+
+그러면... 다시... 그 공고번호를 다 알아내어서
+form request을 만들어서 검색?
+
+## 의사코드 정리
+
+* 접근 가능한 사이트 경로를 먼저 파악해보자.
+  * 검색 form 입력 화면
+    * 공고번호와 개찰완료 버튼들
+    * 개찰완료 버튼을 누르면 목적 페이지가 나타난다.
+  * 공고 번호를 알면 목적 페이지로 바로 접근할 수 있다.
+
+
+* 가능한 경로 파악
+  * 검색 form 화면 -> selenium으로 검색 버튼 클릭 -> 공고 번호 수집 -> form requset
+  * 검색 form 화면 -> selenium으로 검색 버튼 클릭 -> 개찰완료 버튼
+
+* 두번째 방법의 문제점
+  * 검색 완료 페이지에서 하나의 공고로 들어간 뒤에 다시 뒤로 빠져나온 다음에 다시 기존의 검색 결과 페이지로 돌아간 다음 다른 공고로 들어가야 한다. 그런데 문제는 검색 결과 페이지 역시 동적으로 불러온 사이트이기 때문에... 사이트 번호를 url을 다시... 돌아가서... sequential하게 움직일 뿐더러...
+* 첫번째 방법을 해보자
+검색 화면에서 selenium으로 검색어를 입력한다. 다음에 나온 화면에서 공고번호를 다 딴다. 조건은 개찰완료인 상태여야 한다.
+그리고 그냥 javascript 인자 내용을 그대로 받자. 그리고 그 결과를 파싱해서 scrapy requset을 보낸다. 이 부분은 paralel하게 할 수 있다. 각 함수에서 table을 수집한다.
+
+
+의사코드
+```
+import scrapy and selenium
+
+url = 검색 입력 페이지
+
+tables=[]
+
+start_requset
+	selenium driver init
+	user driver to form inputs
+	click search button
+
+	ans_list
+	for i = 0 to table length
+		if state = 개찰완료
+			ans_list.append(row_javascript_arguments)
+	
+	for i in ans_list
+		scrapy.requset(row_javascript_arguments, callback=cumulate)
+
+cummulate(response)
+	tb=pandas.read_html(response.html)
+
+	tables.append(tb)
+	
+```
+
+
+
+
+
+
+scrapy와 selenium을 결합할 것이다. scrapy에서 1번의 middleware을 사용할 수 있다. 
+
+
+
+이제 내가 해야 하는 것? 
+
+지금 나라장터에 우리가 사용하고 싶은 페이지는 자바스크립트로 동적으로 가지고 온다. 그리고 또... 꼭 필요한 인자를 한글로 전달한다. 게다가... 나라장터는 한글 인코딩이 euc-kr으로 되어있다(charset = euc-kr). 문제는... scrapy에서 평행적으로 실행하려면... json.dump으로 post body dictionary을 string으로 바꿔야 한다. 그런데 json.dump가 버그로 인해서 이제 바이트 코드를 받아주지 않는다! JSON serialized ... 뭐 이런 에러를 뿜는다. 오랫동안 검색을 해봤으나... 해답을 못찾았다. 그래서 그냥... 평행적으로 하는 것을 포기하고... sequential하게 뽑기로 했다. 어쩔 수 없음... 
+
+유니코드 : 모든 언어 문자에 대해 매핑한 정수 코드. 보통 그래서 기준이 된다. 파이썬은 모든 string을 유니코드로 인식한다. 
+바이트코드 : 유니코드를 다른 정수 코드로 바꿔진 코드. 바이트로 쓴다. \x....은 16진법으로 매핑된 문자. 특정 유니코드가 이 바이트 코드로 매핑되는 것.
+encode : 유니코드를 바이트코드로 정수화 암호화하는 것. 
+decode : 바이트코드를 다시 유니코드로 푸는 것. 
